@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap');
+$base: #e3e6e6;
+$complimentary: #232f3e;
+$accent: #febd69;
+
+@mixin round-border {
+  border: $complimentary solid 1px;
+  border-radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  color: $complimentary;
+}
+
+img {
+  height: auto;
+  max-width: 800px;
+}
+
+body {
+  height: 100vh;
+}
+
+#app {
+  height: 100%;
+}
+
+button {
+  all: unset;
+}
+
+a.button {
+  text-decoration: none;
+}
+
+.button {
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: black;
+  border-radius: 5px;
+}
+
+.bright-button {
+  background-color: $accent;
+}
+
+.dim-button {
+  background-color: #d1d1d1;
+}
+
+.create-item {
+  height: 100%;
+  main {
+    height: 100%
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    justify-content: center;
+    align-items: center;
+    background-color: $base;
+    height: 100%;
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 5rem;
+      .form-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .form-row {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 1;
+          label {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+          }
+          input, textarea {
+            @include round-border();
+            padding: 10px;
+            outline: none;
+            &:focus {
+              outline: solid;
+              outline-color: #febd69;
+              border: none;
+            }
+          }
+        }
+      }
+      .form-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+          max-width: 400px;
+          height: 400px;
+          object-fit: cover;
+          margin-bottom: 2rem;
+          @include round-border();
+        }
+        input[type=file] {
+          display: none;
+        }
+        label {
+          cursor: pointer;
+          display: inline-block;
+          text-align: center;
+          width: 20rem;
+        }
+      }
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 5rem;
+    }
+  }
+}
