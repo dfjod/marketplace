@@ -19,12 +19,12 @@ const SignUpView = () => {
             <input type="text" id="name" name="name" />
           </div>
           <div className="form-row">
-            <label htmlFor="phone-number">Phone number</label>
-            <input type="tel" id="phone-number" name="phone-number" />
-          </div>
-          <div className="form-row">
             <label htmlFor="last-name">Last name</label>
             <input type="text" id="last-name" name="last-name" />
+          </div>
+          <div className="form-row">
+            <label htmlFor="phone-number">Phone number</label>
+            <input type="text" id="phone-number" name="phone-number" />
           </div>
           <div className="form-row">
             <label htmlFor="password">Password</label>

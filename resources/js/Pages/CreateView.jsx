@@ -1,11 +1,58 @@
 import {useState} from "react";
+import {removeErrorBorder, addErrorBorder} from "../Components/Validate";
 
 const CreateView = () => {
   const [image, setImage] = useState('default-placeholder.png');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const validateImageSize = (event) => {
+    const image = event.target.files[0];
+    if(image.size > 5242880) {
+      setErrorMessage('Your image is too large. Please upload an image smaller than 5MB.');
+      image.value = '';
+      return false;
+    } else {
+      setErrorMessage('');
+    }
+    return true;
+  }
 
   const displayUploadedImage = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
+    if(validateImageSize(event)) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
   }
+
+  const handleInvalid = (event) => {
+    addErrorBorder(event);
+  
+    const validityState = event.target.validity;
+
+    if(validityState.valueMissing) {
+      setErrorMessage('Please fill in all required fields before submitting');
+    } else if(validityState.badInput) {
+      setErrorMessage('Please enter the data in the format specified');
+    } else if(validityState.rangeUnderflow) {
+      setErrorMessage('Please enter a price value that is zero or greater. Negative values cannot be used');
+    } else {
+      setErrorMessage('');
+    }
+  }
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const inputs = document.querySelectorAll('input, textarea');
+    removeErrorBorder(inputs);
+    const valid = event.target.checkValidity();
+
+    if(valid) {
+      console.log("Submited");
+    } else {
+      console.log("Form not valid")
+    }
+  }
+
 
   return (
     <div className="create-item">
@@ -15,30 +62,34 @@ const CreateView = () => {
       <main>
         <div className="form">
           <h1>Create new item!</h1>
-          <form id="item-form" action="#">
+          <form id="item-form" action="#" onSubmit={handleFormSubmit} noValidate>
             <div className="form-left">
               <div className="form-row">
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" name="name"/>
+                <label htmlFor="name">Name<span className="required">*</span></label>
+                <input type="text" id="name" name="name" placeholder="Enter item name (e.g., Vintage Leather Jacket)" maxLength={120} required onInvalid={handleInvalid}/>
               </div>
               <div className="form-row">
-                <label htmlFor="price">Price</label>
-                <input type="number" id="price" name="price" placeholder="€" />
+                <label htmlFor="price">Price (€)<span className="required">*</span></label>
+                <input type="number" id="price" name="price" placeholder="Enter price (e.g., 19.99)" required onInvalid={handleInvalid} min={0} step={0.01}/>
               </div>
               <div className="form-row">
-                <label htmlFor="description">Description</label>
-                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                <label htmlFor="description">Description<span className="required">*</span></label>
+                <textarea name="description" id="description" cols="50" rows="10" maxLength={1000} placeholder="Enter item description (e.g., A stylish vintage leather jacket in excellent condition, size M)" required onInvalid={handleInvalid}></textarea>
               </div>
             </div>
             <div className="form-right">
               <img src={image} alt="placeholder image" id="display-image"/>
               <label htmlFor="picture-upload" className="button bright-button">Upload a picture</label>
-              <input type="file" id="picture-upload" name="picture" onChange={displayUploadedImage}/>
+              <p className="alert">Please note: Your image file size should not exceed 5MB</p>
+              <input type="file" accept="image/jpeg, image/png" id="picture-upload" name="picture" onChange={displayUploadedImage}/>
             </div>
+            {errorMessage && (
+              <p className="error-message">{errorMessage}</p>
+            )}
           </form>
           <div className="buttons">
             <a href="/" className="button dim-button">Cancel</a>
-            <button form="item-form" className="button bright-button">Create</button>
+            <button form="item-form" className="button bright-button" onSubmit={handleFormSubmit}>Create</button>
           </div>
         </div>
       </main>

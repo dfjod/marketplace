@@ -2,6 +2,7 @@
 $base: #e3e6e6;
 $complimentary: #232f3e;
 $accent: #febd69;
+$error: rgb(255, 57, 57);
 
 @mixin navbar {
   header {
@@ -31,10 +32,13 @@ $accent: #febd69;
         font-size: 1.1rem;
         margin-bottom: 0.5rem;
       }
+      @include inputError();
       input, textarea {
         @include round-border();
+        resize: none;
         padding: 10px;
         outline: none;
+        font-size: 1rem;
         &:focus {
           outline: solid;
           outline-color: #febd69;
@@ -60,6 +64,12 @@ $accent: #febd69;
       margin-bottom: 1rem;
     }
     width: 300px;
+  }
+}
+
+@mixin inputError {
+  .input-error {
+    border-color: rgb(255, 57, 57);
   }
 }
 
@@ -100,6 +110,7 @@ a.button {
   font-size: 1.1rem;
   color: black;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .bright-button {
@@ -108,6 +119,11 @@ a.button {
 
 .dim-button {
   background-color: #c0bfbf;
+}
+
+.required {
+  color: $accent;
+  margin-left: 3px;
 }
 
 .index {
@@ -129,8 +145,8 @@ a.button {
   .form {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
-    justify-content: start;
+    gap: 3rem;
+    justify-content: center;
     align-items: center;
     height: 100%;
     @include form();
@@ -163,12 +179,22 @@ a.button {
           text-align: center;
           width: 20rem;
         }
+        .alert {
+          font-size: 0.7rem;
+          color: #b4b4b4;
+        }
       }
     }
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 5rem;
+      gap: 3rem;
+    }
+    .error-message {
+      grid-column: 1/3;
+      text-align: center;
+      margin-top: 3rem;
+      color: $error;
     }
   }
 }
@@ -184,6 +210,11 @@ a.button {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .error-message {
+    color: $error;
+    text-align: center;
+    margin-bottom: 1rem;
   }
   @include authenticateForm();
 }
