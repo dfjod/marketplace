@@ -3,9 +3,64 @@ $base: #e3e6e6;
 $complimentary: #232f3e;
 $accent: #febd69;
 
+@mixin navbar {
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: $complimentary;
+    width: 100%;
+  }
+}
+
 @mixin round-border {
   border: $complimentary solid 1px;
   border-radius: 10px;
+}
+
+@mixin form {
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 1;
+      label {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+      input, textarea {
+        @include round-border();
+        padding: 10px;
+        outline: none;
+        &:focus {
+          outline: solid;
+          outline-color: #febd69;
+          border: none;
+        }
+      }
+    }
+    .form-row-button {
+      display: flex;
+      justify-content: center;
+      button {
+        width: 5rem;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@mixin authenticateForm {
+  @include form();
+  form {
+    .form-row {
+      margin-bottom: 1rem;
+    }
+    width: 300px;
+  }
 }
 
 * {
@@ -27,6 +82,8 @@ body {
 
 #app {
   height: 100%;
+  background-color: $base;
+  @include navbar();
 }
 
 button {
@@ -50,11 +107,22 @@ a.button {
 }
 
 .dim-button {
-  background-color: #d1d1d1;
+  background-color: #c0bfbf;
+}
+
+.index {
+  height: 100%;
+  @include navbar();
+  .authentication-buttons {
+    display: flex;
+    gap: 2rem;
+  }
 }
 
 .create-item {
   height: 100%;
+  display: flex;
+  flex-direction: column;
   main {
     height: 100%
   }
@@ -62,10 +130,10 @@ a.button {
     display: flex;
     flex-direction: column;
     gap: 5rem;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    background-color: $base;
     height: 100%;
+    @include form();
     form {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -74,25 +142,6 @@ a.button {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        .form-row {
-          display: flex;
-          flex-direction: column;
-          flex-shrink: 1;
-          label {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-          }
-          input, textarea {
-            @include round-border();
-            padding: 10px;
-            outline: none;
-            &:focus {
-              outline: solid;
-              outline-color: #febd69;
-              border: none;
-            }
-          }
-        }
       }
       .form-right {
         display: flex;
@@ -122,4 +171,34 @@ a.button {
       gap: 5rem;
     }
   }
+}
+
+.signin {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  main {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @include authenticateForm();
+}
+
+.signup {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  main {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @include authenticateForm();
 }

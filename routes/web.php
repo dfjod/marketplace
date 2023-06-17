@@ -15,9 +15,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Index');
+    return Inertia::render('IndexView');
 });
 
 Route::get('/new', function() {
-  return Inertia::render('Create');
+  return Inertia::render('CreateView');
+});
+
+Route::get('/signin', function() {
+  return Inertia::render('SignInView');
+});
+
+Route::get('/signup', function() {
+  return Inertia::render('SignUpView');
 });

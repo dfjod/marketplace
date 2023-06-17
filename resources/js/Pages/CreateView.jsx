@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const Create = () => {
+const CreateView = () => {
   const [image, setImage] = useState('default-placeholder.png');
 
   const displayUploadedImage = (event) => {
@@ -10,9 +10,10 @@ const Create = () => {
   return (
     <div className="create-item">
       <header>
+        <a href="/" className="button dim-button">Back</a>
       </header>
       <main>
-        <section className="form">
+        <div className="form">
           <h1>Create new item!</h1>
           <form id="item-form" action="#">
             <div className="form-left">
@@ -39,10 +40,10 @@ const Create = () => {
             <a href="/" className="button dim-button">Cancel</a>
             <button form="item-form" className="button bright-button">Create</button>
           </div>
-        </section>
+        </div>
       </main>
     </div>
   )
 }
 
-export default Create;
+export default CreateView;
