@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,13 +20,18 @@ Route::get('/', function () {
     return Inertia::render('IndexView');
 });
 
-Route::get('/new', function() {
-  return Inertia::render('CreateView');
+Route::get('/new', [ItemController::class, 'create'])->middleware('auth');
+
+Route::get('login', [UserController::class, 'login'])->name('login')->middleware('guest');
+Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
+
+Route::get('register', [UserController::class, 'register'])->middleware('guest');
+Route::post('register', [UserController::class, 'store'])->middleware('guest');
+
+Route::get('layout', function() {
+  return Inertia::render('Layout');
 });
 
-Route::get('/signin', function() {
-  return Inertia::render('SignInView');
+Route::get('profile', function () {
+  return Inertia::render('ProfileView');
 });
-
-Route::get('/signup', [UserController::class, 'create']);
-Route::post('/signup', [UserController::class, 'store']);

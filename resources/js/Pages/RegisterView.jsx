@@ -1,6 +1,7 @@
-import {useForm} from '@inertiajs/inertia-react';
+import { useForm, Link } from '@inertiajs/inertia-react';
+import NavigationBar from '../Components/NavigationBar';
 
-const SignUpView = () => {
+const RegisterView = () => {
   const {data, setData, errors, processing, post} = useForm({
     username: '',
     email: '',
@@ -12,14 +13,12 @@ const SignUpView = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    post('/signup');
+    post('/register');
   }
 
   return (
     <div className="signup">
-      <header>
-        <a href="/" className="button dim-button">Back</a>
-      </header>
+      <NavigationBar backToIndex login />
       <main>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-row">
@@ -43,11 +42,6 @@ const SignUpView = () => {
             {errors.last_name && <p className='error-message'>{errors.last_name}</p>}
           </div>
           <div className="form-row">
-            <label htmlFor="phone-number">Phone number</label>
-            <input type="text" id="phone-number" value={data.phone_number} onChange={event => setData('phone_number', event.target.value)} className={errors.phone_number && 'input-error'} />
-            {errors.phone_number && <p className='error-message'>{errors.phone_number}</p>}
-          </div>
-          <div className="form-row">
             <label htmlFor="password">Password</label>
             <input type="password" id="password" value={data.password} onChange={event => setData('password', event.target.value)} className={errors.password && 'input-error'} />
             {errors.password && <p className='error-message'>{errors.password}</p>}
@@ -61,4 +55,4 @@ const SignUpView = () => {
   )
 }
 
-export default SignUpView;
+export default RegisterView;

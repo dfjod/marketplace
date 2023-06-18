@@ -11,6 +11,10 @@ $error: rgb(255, 57, 57);
     padding: 1rem;
     background-color: $complimentary;
     width: 100%;
+    .navbar-right, .navbar-left {
+      display: flex;
+      gap: 2rem;
+    }
   }
 }
 
@@ -126,13 +130,19 @@ a.button {
   margin-left: 3px;
 }
 
+.popup {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background-color: $accent;
+  padding: 1rem;
+}
+
 .index {
   height: 100%;
-  @include navbar();
-  .authentication-buttons {
-    display: flex;
-    gap: 2rem;
-  }
 }
 
 .create-item {

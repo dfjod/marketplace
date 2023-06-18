@@ -1,5 +1,6 @@
 import {useState} from "react";
-import {Inertia} from "@inertiajs/inertia";
+import { Link, useForm } from "@inertiajs/inertia-react";
+import NavigationBar from "../Components/NavigationBar";
 
 const CreateView = () => {
   const [image, setImage] = useState('default-placeholder.png');
@@ -24,7 +25,6 @@ const CreateView = () => {
   }
 
   const handleInvalid = (event) => {
-    addErrorBorder(event);
   
     const validityState = event.target.validity;
 
@@ -43,7 +43,6 @@ const CreateView = () => {
     event.preventDefault();
 
     const inputs = document.querySelectorAll('input, textarea');
-    removeErrorBorder(inputs);
 
     const valid = event.target.checkValidity();
 
@@ -74,12 +73,9 @@ const CreateView = () => {
     }
   }
 
-
   return (
     <div className="create-item">
-      <header>
-        <a href="/" className="button dim-button">Back</a>
-      </header>
+      <NavigationBar profile logout />
       <main>
         <div className="form">
           <h1>Create new item!</h1>
@@ -109,7 +105,7 @@ const CreateView = () => {
             )}
           </form>
           <div className="buttons">
-            <a href="/" className="button dim-button">Cancel</a>
+            <Link href="/" className="button dim-button">Cancel</Link>
             <button form="item-form" className="button bright-button" onSubmit={handleFormSubmit}>Create</button>
           </div>
         </div>
