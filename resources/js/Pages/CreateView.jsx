@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {Inertia} from "@inertiajs/inertia"
 import {removeErrorBorder, addErrorBorder} from "../Components/Validate";
 
 const CreateView = () => {
@@ -44,10 +45,31 @@ const CreateView = () => {
 
     const inputs = document.querySelectorAll('input, textarea');
     removeErrorBorder(inputs);
+
     const valid = event.target.checkValidity();
 
     if(valid) {
-      console.log("Submited");
+      const formData = new FormData(event.target);
+      const formObject = Object.fromEntries(formData.entries());
+
+      // Upload image to imgur, return link to the imgae
+      const clientIdKey = import.meta.env.VITE_REACT_APP_CLIENT_ID;
+      const auth = `Client-ID ${clientIdKey}`;
+      const response = await fetch('https://api.imgur.com/3/image', {
+        method: "POST",
+        body: formObject['picture'],
+        headers: {
+          Authorization: auth,
+          Accept: "application/json" 
+        }
+      });
+      const data = await response.json();
+      const pictureLink = data['data']['link'];
+      // Change picture value to the link
+      formObject['picture'] = pictureLink;
+      console.log(formObject);
+      // Pass form data to the server
+      // await Inertia.post('/new', JSON.stringify(formObject));
     } else {
       console.log("Form not valid")
     }
@@ -62,7 +84,7 @@ const CreateView = () => {
       <main>
         <div className="form">
           <h1>Create new item!</h1>
-          <form id="item-form" action="#" onSubmit={handleFormSubmit} noValidate>
+          <form id="item-form" onSubmit={handleFormSubmit} noValidate>
             <div className="form-left">
               <div className="form-row">
                 <label htmlFor="name">Name<span className="required">*</span></label>
