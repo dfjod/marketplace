@@ -1,6 +1,5 @@
 import {useState} from "react";
-import {Inertia} from "@inertiajs/inertia"
-import {removeErrorBorder, addErrorBorder} from "../Components/Validate";
+import {Inertia} from "@inertiajs/inertia";
 
 const CreateView = () => {
   const [image, setImage] = useState('default-placeholder.png');

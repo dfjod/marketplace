@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,6 +27,5 @@ Route::get('/signin', function() {
   return Inertia::render('SignInView');
 });
 
-Route::get('/signup', function() {
-  return Inertia::render('SignUpView');
-});
+Route::get('/signup', [UserController::class, 'create']);
+Route::post('/signup', [UserController::class, 'store']);

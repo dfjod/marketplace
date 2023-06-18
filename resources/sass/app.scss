@@ -231,5 +231,11 @@ a.button {
     justify-content: center;
     align-items: center;
   }
+  .error-message {
+    color: $error;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: start;
+  }
   @include authenticateForm();
 }
