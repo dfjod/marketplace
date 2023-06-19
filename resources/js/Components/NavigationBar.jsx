@@ -10,7 +10,7 @@ const NavigationBar = ({ newItem, backToIndex, login, register, profile, logout,
       <div className="navbar-right">
         {login && <Link href="/login" className="button dim-button">Sign in</Link>}
         {register && <Link href="/register" className="button bright-button">Sign up</Link>}
-        {logout && <Link href="/logout" className="button dim-button">Sign out</Link>}
+        {logout && <Link href="/logout" className="button dim-button" method='post'>Sign out</Link>}
         {profile && <Link href="/profile" className="button bright-button">Profile</Link>}
       </div>
     </header>

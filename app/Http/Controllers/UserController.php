@@ -8,18 +8,8 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-  public function register() {
+  public function create() {
     return Inertia::render('RegisterView');
-  }
-
-  public function login() {
-    return Inertia::render('LoginView');
-  }
-
-  public function logout() {
-    auth()->logout();
-
-    return redirect('/')->with('message', 'Successfully logged out!');
   }
 
   public function store(Request $request) {

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
+use GuzzleHttp\Cookie\SessionCookieJar;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,15 +24,12 @@ Route::get('/', function () {
 
 Route::get('/new', [ItemController::class, 'create'])->middleware('auth');
 
-Route::get('login', [UserController::class, 'login'])->name('login')->middleware('guest');
-Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
+Route::get('login', [SessionController::class, 'create'])->name('login')->middleware('guest');
+Route::post('login', [SessionController::class, 'store']);
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::get('register', [UserController::class, 'register'])->middleware('guest');
+Route::get('register', [UserController::class, 'create'])->middleware('guest');
 Route::post('register', [UserController::class, 'store'])->middleware('guest');
-
-Route::get('layout', function() {
-  return Inertia::render('Layout');
-});
 
 Route::get('profile', function () {
   return Inertia::render('ProfileView');

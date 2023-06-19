@@ -1,8 +1,10 @@
 import {useState} from "react";
-import { Link, useForm } from "@inertiajs/inertia-react";
+import { Link, useForm, usePage } from "@inertiajs/inertia-react";
 import NavigationBar from "../Components/NavigationBar";
+import Popup from "../Components/Popup";
 
 const CreateView = () => {
+  const { flash } = usePage().props;
   const [image, setImage] = useState('default-placeholder.png');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -109,6 +111,7 @@ const CreateView = () => {
             <button form="item-form" className="button bright-button" onSubmit={handleFormSubmit}>Create</button>
           </div>
         </div>
+        <Popup message={flash.message} />
       </main>
     </div>
   )
