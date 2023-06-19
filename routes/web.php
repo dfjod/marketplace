@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use GuzzleHttp\Cookie\SessionCookieJar;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Item;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +20,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('IndexView');
+    return Inertia::render('IndexView', [
+      'items' => Item::all(),
+    ]);
 });
 
 Route::get('/new', [ItemController::class, 'create'])->middleware('auth');
+Route::post('/new', [ItemController::class, 'store'])->middleware('auth');
 
 Route::get('login', [SessionController::class, 'create'])->name('login')->middleware('guest');
 Route::post('login', [SessionController::class, 'store']);

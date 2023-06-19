@@ -5,8 +5,13 @@ import Popup from "../Components/Popup";
 
 const CreateView = () => {
   const { flash } = usePage().props;
-  const [image, setImage] = useState('default-placeholder.png');
   const [errorMessage, setErrorMessage] = useState('');
+  const [imgurLink, setImgurLink] = useState('default-placeholder.png');
+  const { data, setData, errors, processing, post, transform } = useForm({
+    title: '',
+    price: '',
+    description: '',
+  });
 
   const validateImageSize = (event) => {
     const image = event.target.files[0];
@@ -20,9 +25,25 @@ const CreateView = () => {
     return true;
   }
 
-  const displayUploadedImage = (event) => {
-    if(validateImageSize(event)) {
-      setImage(URL.createObjectURL(event.target.files[0]));
+  const displayUploadedImage = async (event) => {
+    if(validateImageSize(event)) {      
+      const image = event.target.files[0];
+
+      const clientIdKey = import.meta.env.VITE_REACT_APP_CLIENT_ID;
+      const auth = `Client-ID ${clientIdKey}`;
+
+      const response = await fetch('https://api.imgur.com/3/image', {
+        method: "POST",
+        body: image,
+        headers: {
+          Authorization: auth,
+          Accept: "application/json" 
+        }
+      });
+
+      const responseData = await response.json();
+      const link = responseData['data']['link'];
+      setImgurLink(link);
     }
   }
 
@@ -41,37 +62,19 @@ const CreateView = () => {
     }
   }
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-
-    const inputs = document.querySelectorAll('input, textarea');
-
+    setErrorMessage('');
     const valid = event.target.checkValidity();
 
     if(valid) {
-      const formData = new FormData(event.target);
-      const formObject = Object.fromEntries(formData.entries());
-
-      // Upload image to imgur, return link to the imgae
-      const clientIdKey = import.meta.env.VITE_REACT_APP_CLIENT_ID;
-      const auth = `Client-ID ${clientIdKey}`;
-      const response = await fetch('https://api.imgur.com/3/image', {
-        method: "POST",
-        body: formObject['picture'],
-        headers: {
-          Authorization: auth,
-          Accept: "application/json" 
-        }
-      });
-      const data = await response.json();
-      const pictureLink = data['data']['link'];
-      // Change picture value to the link
-      formObject['picture'] = pictureLink;
-      console.log(formObject);
+      // Set image link
+      transform((data) => ({
+        ...data,
+        picture_url: imgurLink,
+      }))
       // Pass form data to the server
-      // await Inertia.post('/new', JSON.stringify(formObject));
-    } else {
-      console.log("Form not valid")
+      post('/new');
     }
   }
 
@@ -84,23 +87,26 @@ const CreateView = () => {
           <form id="item-form" onSubmit={handleFormSubmit} noValidate>
             <div className="form-left">
               <div className="form-row">
-                <label htmlFor="name">Name<span className="required">*</span></label>
-                <input type="text" id="name" name="name" placeholder="Enter item name (e.g., Vintage Leather Jacket)" maxLength={120} required onInvalid={handleInvalid}/>
+                <label htmlFor="title">Title<span className="required">*</span></label>
+                <input type="text" id="title" placeholder="Enter item title (e.g., Vintage Leather Jacket)" maxLength={120} required onInvalid={handleInvalid} value={data.title} onChange={event => setData('title', event.target.value)} />
+                {errors.title && <div className="error-message">{errors.title}</div>}
               </div>
               <div className="form-row">
                 <label htmlFor="price">Price (€)<span className="required">*</span></label>
-                <input type="number" id="price" name="price" placeholder="Enter price (e.g., 19.99)" required onInvalid={handleInvalid} min={0} step={0.01}/>
+                <input type="number" id="price" name="price" placeholder="Enter price (e.g., 19.99)" required onInvalid={handleInvalid} min={0} step={0.01} value={data.price} onChange={event => setData('price', event.target.value)}/>
+                {errors.price && <div className="error-message">{errors.price}</div>}
               </div>
               <div className="form-row">
                 <label htmlFor="description">Description<span className="required">*</span></label>
-                <textarea name="description" id="description" cols="50" rows="10" maxLength={1000} placeholder="Enter item description (e.g., A stylish vintage leather jacket in excellent condition, size M)" required onInvalid={handleInvalid}></textarea>
+                <textarea name="description" id="description" cols="50" rows="10" maxLength={1000} placeholder="Enter item description (e.g., A stylish vintage leather jacket in excellent condition, size M)" required onInvalid={handleInvalid} value={data.description} onChange={event => setData('description', event.target.value)}></textarea>
+                {errors.description && <div className="error-message">{errors.description}</div>}
               </div>
             </div>
             <div className="form-right">
-              <img src={image} alt="placeholder image" id="display-image"/>
+              <img src={imgurLink} alt="placeholder image" id="display-image"/>
               <label htmlFor="picture-upload" className="button bright-button">Upload a picture</label>
               <p className="alert">Please note: Your image file size should not exceed 5MB</p>
-              <input type="file" accept="image/jpeg, image/png" id="picture-upload" name="picture" onChange={displayUploadedImage}/>
+              <input type="file" accept="image/jpeg, image/png" id="picture-upload" name="picture" onChange={displayUploadedImage} />
             </div>
             {errorMessage && (
               <p className="error-message">{errorMessage}</p>
@@ -108,7 +114,7 @@ const CreateView = () => {
           </form>
           <div className="buttons">
             <Link href="/" className="button dim-button">Cancel</Link>
-            <button form="item-form" className="button bright-button" onSubmit={handleFormSubmit}>Create</button>
+            <button form="item-form" onSubmit={handleFormSubmit} disabled={processing} className="button bright-button">Create</button>
           </div>
         </div>
         <Popup message={flash.message} />
