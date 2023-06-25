@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -18,7 +19,7 @@ class ItemController extends Controller
       'title' => ['required', 'max:255'],
       'price' => ['required', 'decimal:2'],
       'description' => ['required', 'max:1000'],
-      'picture_link' => ['url']
+      'picture_url' => ['url'],
     ]);
 
     $attributes += ['user_id' => Auth::id()];
@@ -26,5 +27,15 @@ class ItemController extends Controller
     Item::create($attributes);
 
     return redirect('/')->with('message', 'Item successfully created!');
+  }
+
+  public function show($id) {
+    $item = Item::find($id);
+    $user = User::find($item['user_id']);
+
+    return Inertia::render('ItemView', [
+      'item' => $item,
+      'user' => $user,
+    ]);
   }
 }

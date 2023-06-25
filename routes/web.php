@@ -27,6 +27,7 @@ Route::get('/', function () {
 
 Route::get('/new', [ItemController::class, 'create'])->middleware('auth');
 Route::post('/new', [ItemController::class, 'store'])->middleware('auth');
+Route::get('/item/{id}', [ItemController::class, 'show']);
 
 Route::get('login', [SessionController::class, 'create'])->name('login')->middleware('guest');
 Route::post('login', [SessionController::class, 'store']);

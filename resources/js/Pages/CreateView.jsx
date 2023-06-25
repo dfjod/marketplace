@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { Link, useForm, usePage } from "@inertiajs/inertia-react";
 import NavigationBar from "../Components/NavigationBar";
 import Popup from "../Components/Popup";
@@ -11,7 +11,13 @@ const CreateView = () => {
     title: '',
     price: '',
     description: '',
+    picture_url: null,
   });
+
+  // Sets picture_url when imgurLink changed
+  useEffect(() => {
+    imgurLink !== 'default-placeholder.png' ? setData('picture_url', imgurLink) : null;
+  }, [imgurLink]);
 
   const validateImageSize = (event) => {
     const image = event.target.files[0];
@@ -43,7 +49,7 @@ const CreateView = () => {
 
       const responseData = await response.json();
       const link = responseData['data']['link'];
-      setImgurLink(link);
+      setImgurLink(link);  
     }
   }
 
@@ -68,11 +74,6 @@ const CreateView = () => {
     const valid = event.target.checkValidity();
 
     if(valid) {
-      // Set image link
-      transform((data) => ({
-        ...data,
-        picture_url: imgurLink,
-      }))
       // Pass form data to the server
       post('/new');
     }
@@ -103,7 +104,7 @@ const CreateView = () => {
               </div>
             </div>
             <div className="form-right">
-              <img src={imgurLink} alt="placeholder image" id="display-image"/>
+              <img src={imgurLink} alt="placeholder image" id="display-image" />
               <label htmlFor="picture-upload" className="button bright-button">Upload a picture</label>
               <p className="alert">Please note: Your image file size should not exceed 5MB</p>
               <input type="file" accept="image/jpeg, image/png" id="picture-upload" name="picture" onChange={displayUploadedImage} />

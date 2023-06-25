@@ -1,4 +1,4 @@
-import { Link, useForm } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/inertia-react';
 import NavigationBar from '../Components/NavigationBar';
 
 const LoginView = () => {
