@@ -14,13 +14,11 @@ const IndexView = () => {
         {auth ? <NavigationBar newItem profile logout /> : <NavigationBar newItem login register />}
         <main>
           {items.map(item => (
-            <Link href={`/item/${item.id}`} key={item.id}>
-              <div>
+              <Link href={`/item/${item.id}`} key={item.id} className="index-item">
                 <img src={setPicture(item.picture_url)} alt="item-picture" />
                 <h2>{item.title}</h2>
-                <p>{item.price}</p>
-              </div>
-            </Link>
+                <p>{item.price}€</p>
+              </Link>
           ))}
         </main>
         <Popup message={flash.message}/>

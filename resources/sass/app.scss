@@ -77,6 +77,29 @@ $error: rgb(255, 57, 57);
   }
 }
 
+@mixin girdLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5rem;
+  .grid-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .grid-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      max-width: 400px;
+      height: 400px;
+      object-fit: cover;
+      margin-bottom: 2rem;
+      @include round-border();
+    }
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -143,6 +166,60 @@ a.button {
 
 .index {
   height: 100%;
+  main {
+    display: flex;
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+.index-item {
+  display: block;
+  width: 20rem;
+  text-decoration: none;
+  text-align: center;
+  @include round-border();
+  background-color: $accent;
+  img {
+    height: auto;
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  h2 {
+    height: auto;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  p {
+    height: auto;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+.item-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .item {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .individual-item {
+      @include girdLayout();
+    
+      .grid-left {
+        justify-content: space-around;
+      }
+      .grid-right {
+        img {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
 
 .create-item {
